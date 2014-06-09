@@ -1,0 +1,19 @@
+<!doctype html>
+<html ng-app="pledgedSitesApp">
+    <head>
+        <meta charset="utf-8">
+        <title>Pledge Panel</title>
+    </head>
+    <body ng-cloak>
+        <div class="container" ng-controller="pledgePanelCtr">
+            <p>{{siteInfo.host}}
+              <span ng-show="siteInfo.canPledge">supports Mozilla Pledge</span>
+              <span ng-show="!siteInfo.canPledge">does not support Mozilla Pledge, but it may soon</span>
+            </p>
+            <p ng-show="siteInfo.pledged">You made {{siteInfo.pledged}} pledges to {{siteInfo.host}}</p>
+            <p>If you like {{siteInfo.host}} you can pledge more</p>
+            <button class="btn btn-default quote-btn" ng-click="pledge()">Pledge</button>
+            </div>
+        </div>
+    </body>
+</html>

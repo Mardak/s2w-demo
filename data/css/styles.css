@@ -1,0 +1,6 @@
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {display: none;}
+.container {margin-top: 50px;}
+.quote-btn {margin-bottom: 30px}
+.quoteContainer {width: 960px;}
+.quote-card {padding: 20px;}
+.quote {font-family: "Open Sans", Helvetica, Arial; font-weight: 200; font-size: 24pt;}
