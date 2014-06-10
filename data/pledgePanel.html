@@ -11,8 +11,13 @@
               <span ng-show="!siteInfo.canPledge">does not support Mozilla Pledge, but it may soon</span>
             </p>
             <p ng-show="siteInfo.pledged">You made {{siteInfo.pledged}} pledges to {{siteInfo.host}}</p>
-            <p>If you like {{siteInfo.host}} you can pledge more</p>
-            <button class="btn btn-default quote-btn" ng-click="pledge()">Pledge</button>
+            <p>You can support {{siteInfo.host}} by making a new </p>
+              <button class="btn btn-default quote-btn" ng-click="pledge()">Pledge</button>
+              <span ng-show="siteInfo.pledged">
+                or
+                <button class="btn btn-default quote-btn" ng-click="clear()">Clear</button>
+                your prior pledges
+              </span>
             </div>
         </div>
     </body>

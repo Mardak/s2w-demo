@@ -22,6 +22,10 @@ pledgedSitesApp.controller("pledgePanelCtr", function($scope) {
     self.port.emit("pledged", $scope.siteInfo);
   }
 
+  $scope.clear = function clear() {
+    self.port.emit("cleared", $scope.siteInfo);
+  }
+
   self.port.on("siteInfo", function(siteData) {
     $scope.$apply(_ => {
       $scope.siteInfo = siteData;
