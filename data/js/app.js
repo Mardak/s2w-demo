@@ -9,9 +9,18 @@ pledgedSitesApp.filter('escape', function() {
 pledgedSitesApp.controller("pledgedSitesCtrl", function($scope) {
   $scope.pledgedSites = null;
 
+  $scope.pledge = function pledge(site) {
+    self.port.emit("pledged", site);
+  }
+
+  $scope.clear = function clear(site) {
+    self.port.emit("cleared", site);
+  }
+
   self.port.on("pledgedSites", function(pledgedSites) {
     $scope.$apply(_ => {
-      $scope.pledgedSites = JSON.stringify(pledgedSites, null, "  ");
+      $scope.pledgedSites = pledgedSites;
+      $scope.pledgedSitesKeys = Object.keys(pledgedSites);
     });
   });
 

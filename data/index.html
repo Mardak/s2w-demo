@@ -6,8 +6,26 @@
     </head>
     <body ng-cloak>
         <div class="container" ng-controller="pledgedSitesCtrl">
-          <p> THE SITES YOU PLEDGED</p>
-           <pre ng-show="pledgedSites">{{pledgedSites}}</pre>
+          <div ng-show="pledgedSites">
+            <p ng-show="pledgedSites"> THE SITES YOU PLEDGED</p>
+              <!-- <pre ng-show="pledgedSites">{{pledgedSitesStr}}</pre> -->
+              <table class="table table-condensed" ng-show="pledgedSites">
+                 <tr ng-repeat="site in pledgedSitesKeys">
+                   <td>
+                     <a href="http://{{site}}">{{site}}</a>
+                     <span ng-show="pledgedSites[site].canPledge"> supports </span>
+                     <span ng-show="!pledgedSites[site].canPledge"> does not yet support </span>
+                     your {{pledgedSites[site].pledged}} pleges
+                   </td>
+                   <td>
+                     <button class="btn btn-default" ng-click="pledge(site)">Pledge More</button>
+                   </td>
+                   <td>
+                     <button class="btn btn-default" ng-click="clear(site)">Clear All</button>
+                   </td>
+                 </tr>
+              </table>
+          </div>
         </div>
     </body>
 </html>
