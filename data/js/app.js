@@ -17,10 +17,24 @@ pledgedSitesApp.controller("pledgedSitesCtrl", function($scope) {
     self.port.emit("cleared", site);
   }
 
-  self.port.on("pledgedSites", function(pledgedSites) {
+  $scope.monthlyPledge = function monthlyPledge() {
+    self.port.emit("monthly-amount", $scope.monthlyPledgeAmount);
+  }
+
+  self.port.on("pledgedSites", function(pledgeData) {
     $scope.$apply(_ => {
-      $scope.pledgedSites = pledgedSites;
-      $scope.pledgedSitesKeys = Object.keys(pledgedSites);
+      $scope.pledgedSites = pledgeData.pledgedSites;
+      $scope.pledgedSitesKeys = Object.keys(pledgeData.pledgedSites);
+      $scope.monthlyPledgeAmount = pledgeData.pledgedAmount;
+      let totalPoints = 0;
+      $scope.pledgedSitesKeys.forEach((host) => {
+        totalPoints += pledgeData.pledgedSites[host].pledged;
+      });
+      $scope.pledgedSitesKeys.forEach((host) => {
+        let siteInfo = pledgeData.pledgedSites[host];
+        siteInfo.dollars = Math.round(siteInfo.pledged / totalPoints * pledgeData.pledgedAmount * 100) / 100 || 0;
+      });
+      $scope.pledgedSitesStr = JSON.stringify($scope.pledgedSites);
     });
   });
 
