@@ -9,6 +9,34 @@ pledgedSitesApp.filter('escape', function() {
 pledgedSitesApp.controller("pledgedSitesCtrl", function($scope) {
   $scope.pledgedSites = null;
 
+  $scope.clear = function clear(site) {
+    if (window.confirm(site + " will be removed from you pledges starting next month")) {
+      self.port.emit("unpledge", site);
+    }
+  }
+
+  $scope.monthlyPledge = function monthlyPledge() {
+    self.port.emit("next-month-pledge-amount", $scope.nextMonthPledgeAmount);
+  }
+
+  self.port.on("pledgedSites", function(pledgeData) {
+    $scope.$apply(_ => {
+      $scope.pledgedSites = pledgeData.sites;
+      $scope.pledgedSitesKeys = Object.keys(pledgeData.sites);
+      $scope.monthlyPledgeAmount = pledgeData.amount;
+      $scope.nextMonthPledgeAmount = pledgeData.nextMonthAmount || pledgeData.amount;
+      $scope.pledgedSitesKeys.forEach((host) => {
+        let siteInfo = pledgeData.sites[host];
+        siteInfo.dollars = Math.round(pledgeData.amount * siteInfo.percentage) / 100 || 0;
+      });
+      $scope.pledgedSitesStr = JSON.stringify($scope.pledgedSites);
+    });
+  });
+});
+
+pledgedSitesApp.controller("pledgedSitesCtrlDebug", function($scope) {
+  $scope.pledgedSites = null;
+
   $scope.pledge = function pledge(site) {
     self.port.emit("pledged", site);
   }
@@ -28,12 +56,11 @@ pledgedSitesApp.controller("pledgedSitesCtrl", function($scope) {
       $scope.monthlyPledgeAmount = pledgeData.amount;
       $scope.pledgedSitesKeys.forEach((host) => {
         let siteInfo = pledgeData.sites[host];
-        siteInfo.dollars = Math.round(siteInfo.pledged / pledgeData.total * pledgeData.amount * 100) / 100 || 0;
+        siteInfo.dollars = Math.round(pledgeData.amount * siteInfo.percentage) / 100 || 0;
       });
       $scope.pledgedSitesStr = JSON.stringify($scope.pledgedSites);
     });
   });
-
 });
 
 pledgedSitesApp.controller("pledgePanelCtr", function($scope) {
@@ -41,13 +68,10 @@ pledgedSitesApp.controller("pledgePanelCtr", function($scope) {
     self.port.emit("pledged", $scope.siteInfo);
   }
 
-  $scope.clear = function clear() {
-    self.port.emit("cleared", $scope.siteInfo);
-  }
-
   self.port.on("siteInfo", function(siteData) {
     $scope.$apply(_ => {
       $scope.siteInfo = siteData;
+      $scope.showButton = (siteData.pledged ? siteData.pledged <= 0: true);
     });
   });
 });

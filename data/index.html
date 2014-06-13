@@ -8,25 +8,26 @@
         <div class="container" ng-controller="pledgedSitesCtrl">
           <div ng-show="pledgedSites">
             <form ng-submit="monthlyPledge()">
-              Your monthly total pledge
+              Your current monthly pledge ${{monthlyPledgeAmount}}.
+              Your next month pledge amount
               <input type="number"
                      size="20"
-                     ng-model="monthlyPledgeAmount"/>
+                     ng-model="nextMonthPledgeAmount"/>
             </form>
             <!-- <pre ng-show="pledgedSites">{{pledgedSitesStr}}</pre> -->
             <table class="table table-condensed" ng-show="pledgedSites">
                <tr ng-repeat="site in pledgedSitesKeys">
                  <td>
                    <a href="http://{{site}}">{{site}}</a>
-                   <span ng-show="pledgedSites[site].canPledge"> supports </span>
-                   <span ng-show="!pledgedSites[site].canPledge"> does not yet support </span>
-                   your {{pledgedSites[site].pledged}} pleges (${{pledgedSites[site].dollars}})
+                   <span ng-show="pledgedSites[site].canPledge">
+                    supports and will recieve {{pledgedSites[site].percentage}}% of your pledge
+                   </span>
+                   <span ng-show="!pledgedSites[site].canPledge">
+                    does not yet support your pledge, but when it does, it will recieve {{pledgedSites[site].percentage}}% of your pledge
+                   </span>
                  </td>
                  <td>
-                   <button class="btn btn-default" ng-click="pledge(site)">Pledge More</button>
-                 </td>
-                 <td>
-                   <button class="btn btn-default" ng-click="clear(site)">Clear All</button>
+                   <button class="btn btn-default" ng-show="!pledgedSites[site].unpledged" ng-click="clear(site)">Unpledge</button>
                  </td>
                </tr>
             </table>

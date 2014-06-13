@@ -10,14 +10,16 @@
               <span ng-show="siteInfo.canPledge">supports Mozilla Pledge</span>
               <span ng-show="!siteInfo.canPledge">does not support Mozilla Pledge, but it may soon</span>
             </p>
-            <p ng-show="siteInfo.pledged">You made {{siteInfo.pledged}} pledges to {{siteInfo.host}}</p>
-            <p>You can support {{siteInfo.host}} by making a new </p>
+            <p ng-show="showButton">
+              If you pledge {{siteInfo.host}}, it will recieve part of your monthly pledge amount proportional to your visits to {{siteInfo.host}}.
+              <br/>
+              Do you want to pledge:
               <button class="btn btn-default quote-btn" ng-click="pledge()">Pledge</button>
-              <span ng-show="siteInfo.pledged">
-                or
-                <button class="btn btn-default quote-btn" ng-click="clear()">Clear</button>
-                your prior pledges
-              </span>
+            </p>
+            <p ng-show="!showButton">
+              {{siteInfo.host}} is a pledged site! <br/>
+              It will recieve part of your monthly pledge amount proportional to your visits to {{siteInfo.host}}.
+            </p>
             </div>
         </div>
     </body>
